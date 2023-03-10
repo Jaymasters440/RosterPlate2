@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require("fs");
 const gm = require("./src/generateHTML.js");
-const Employee = require("./lib/employee.js");
+const { Employee, Manager, Engineer, Intern } = require("./lib/employee.js");
 var employees = [];
 
 
@@ -80,17 +80,43 @@ function init() {
             employees.push(manager)
 
 
-            inquirer
-            .prompt(menueQuestion)
-            .then((data) => {
-                console.log(data);
-    
-            })
+            AddEngInt()
+
         });
 
-   
+
 }
 init();
+
+function AddEngInt() {
+    inquirer
+        .prompt(menueQuestion)
+        .then((data) => {
+            console.log(data);
+            if (data.choice === "engineer") {
+                inquirer
+                    .prompt(engineerQuestions)
+                    .then((data) => {
+                        var engineer = new Engineer(data.name, data.email, data.id, data.gitHub)
+                        employees.push(engineer);
+                        AddEngInt();
+                    })
+
+            } else if (data.choice === "intern") {
+                inquirer
+                    .prompt(internQuestions)
+                    .then((data) => {
+                        var intern = new Intern(data.name, data.email, data.id, data.school)
+                        employees.push(intern);
+                        AddEngInt();
+                    })
+            }
+
+
+            else { console.log("Generating HTML page") }
+
+        })
+}
 
 
 //writeToFile(filename, data);
