@@ -1,85 +1,68 @@
 const inquirer = require('inquirer');
 const fs = require("fs");
-const gm = require("./utils/generateHTML.js");
+const gm = require("./src/generateHTML.js");
+const Employee = require("./lib/employee.js");
+var employees = [];
+
 
 // generate Questions for each type of employee 
-var managerQuestions = [{
+var defaultQuestions = [{
     type: "input",
-    message: "What is the manager's name?",
+    message: "What is the employee's name?",
     name: "name"
 },
 
 {
     type: "input",
-    message: "What is the manager's id?",
+    message: "What is the employee's id?",
     name: "id"
 },
 
 {
     type: "input",
-    message: "What is the manager's email?",
+    message: "What is the employee's email?",
     name: "email"
 },
 
-{
-    type: "input",
-    message: "What is the manager's office?",
-    name: "office",
-},
 
-]
 
-var engineerQuestions = [{
-    type: "input",
-    message: "What is the Engineer's name?",
-    name: "name"
-},
+];
 
-{
-    type: "input",
-    message: "What is the Engineer's id?",
-    name: "id"
-},
+var managerQuestions = [
+    ...defaultQuestions,
+    {
+        type: "input",
+        message: "What is the manager's office number?",
+        name: "officeNumber"
+    },
+];
 
-{
-    type: "input",
-    message: "What is the Engineer's email?",
-    name: "email"
-},
+var engineerQuestions = [
+    ...defaultQuestions,
+    {
+        type: "input",
+        message: "What is the engineer's GitHub?",
+        name: "gitHub",
+    },
 
-{
-    type: "input",
-    message: "What is the Engineers'GitHub?",
-    name: "office",
-},
+];
 
-]
+var internQuestions = [
+    ...defaultQuestions,
 
-var managerQuestions = [{
-    type: "input",
-    message: "What is the Intern's name?",
-    name: "name"
-},
+    {
+        type: "input",
+        message: "What is the intern's school?",
+        name: "school",
+    },
 
-{
-    type: "input",
-    message: "What is the Intern's id?",
-    name: "id"
-},
-
-{
-    type: "input",
-    message: "What is the Intern's email?",
-    name: "email"
-},
-
-{
-    type: "input",
-    message: "What is the Intern's school?",
-    name: "office",
-},
-
-]
+];
+var menueQuestion = [{
+    type: "list",
+    message: "Would you like to add an engineer or intern? (or exit to create HTML?)",
+    name: "choice",
+    choices: ["engineer", "intern", "exit",]
+}];
 
 
 // Function to write to HTML
@@ -88,11 +71,26 @@ var managerQuestions = [{
 
 // Function to initialize app //??
 function init() {
+    console.log("Welcome to Roster Plate!")
     inquirer
-    .prompt(questions)
+        .prompt(managerQuestions)
 
-    .then((data) => {
-        const filename = ``
-        writeToFile(filename, data);
-    });
- }
+        .then((data) => {
+            var manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+            employees.push(manager)
+
+
+            inquirer
+            .prompt(menueQuestion)
+            .then((data) => {
+                console.log(data);
+    
+            })
+        });
+
+   
+}
+init();
+
+
+//writeToFile(filename, data);
