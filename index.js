@@ -3,6 +3,7 @@ const fs = require("fs");
 const gm = require("./src/generateHTML.js");
 const { Employee, Manager, Engineer, Intern } = require("./lib/employee.js");
 var employees = [];
+const generateCard = require("./src/generateHTML")
 
 
 // generate Questions for each type of employee 
@@ -113,7 +114,16 @@ function AddEngInt() {
             }
 
 
-            else { console.log("Generating HTML page") }
+            else {
+              var htmlCard = gm.generateHTML(employees); 
+              
+              
+                console.log("Generating HTML page"); 
+                fs.writeFile("./dist/" + employees[0].getName().toLowerCase()+"sTeam.html",htmlCard, function(err,result){
+                    if(err) console.log("error",err)
+                });
+                
+            }
 
         })
 }
