@@ -1,4 +1,4 @@
-const { Employee, Manager, Engineer, Intern } = require("./lib/employee.js");
+const { Employee, Manager, Engineer, Intern } = require("../lib/employee.js");
 
 describe('Intern', () => {
     // A test is created to check that modulus does in fact return the the getName sent to the constructor Intern.  describe('getName', () => {
